@@ -1,16 +1,16 @@
-# PlantUML 编写与渲染指南
+# PlantUML编写与渲染指南
 
-## 4+1 架构视图选择指南
+## 4+1架构视图选择指南
 
-根据需求的实际情况选择适用的视图（不必强制使用全部 5 个视图，按需选择 2-4 个）。
+根据需求的实际情况选择适用的视图（不必强制使用全部5个视图，按需选择2-4个）。
 
-| 视图 | 何时使用 | 对应章节 | PlantUML 图类型 |
-|------|----------|----------|----------------|
-| 场景视图 (Scenarios) | 始终使用 -- 描述核心用例 | 流程描述 | 用例图 (usecase) |
-| 逻辑视图 (Logical) | 涉及类设计或模块交互时 | 数据描述 | 类图 (class) |
-| 过程视图 (Process) | 涉及并发、线程、时序时 | 流程描述 | 时序图 (sequence)、活动图 (activity) |
-| 开发视图 (Development) | 涉及模块划分、分层、依赖时 | 依赖性描述 | 组件图 (component)、包图 (package) |
-| 物理视图 (Physical) | 涉及部署、多节点、设备交互时 | 依赖性描述 | 部署图 (deployment) |
+| 视图                  | 何时使用                     | 对应章节   | PlantUML图类型                     |
+| --------------------- | ---------------------------- | ---------- | ---------------------------------- |
+| 场景视图(Scenarios)   | 始终使用 -- 描述核心用例     | 流程描述   | 用例图(usecase)                    |
+| 逻辑视图(Logical)     | 涉及类设计或模块交互时       | 数据描述   | 类图(class)                        |
+| 过程视图(Process)     | 涉及并发、线程、时序时       | 流程描述   | 时序图(sequence)、活动图(activity) |
+| 开发视图(Development) | 涉及模块划分、分层、依赖时   | 依赖性描述 | 组件图(component)、包图(package)   |
+| 物理视图(Physical)    | 涉及部署、多节点、设备交互时 | 依赖性描述 | 部署图(deployment)                 |
 
 ## 全局样式规范
 
@@ -20,11 +20,11 @@
 
 ```plantuml
 ' --- 基础样式 ---
-skinparam backgroundColor #FEFEFE
+skinparam backgroundColor    #FEFEFE
 skinparam shadowing false
 skinparam defaultFontName "Noto Sans CJK SC"
 skinparam defaultFontSize 13
-skinparam ArrowColor #444444
+skinparam ArrowColor         #444444
 skinparam RoundCorner 8
 ```
 
@@ -32,21 +32,21 @@ skinparam RoundCorner 8
 
 时序图样式：
 ```plantuml
-skinparam sequenceArrowColor #2E5984
-skinparam sequenceParticipantBorderColor #2E5984
-skinparam sequenceParticipantBackgroundColor #E8F0FE
-skinparam sequenceLifeLineBorderColor #7BAFD4
-skinparam sequenceGroupBackgroundColor #F2F7FB
-skinparam sequenceGroupBorderColor #2E5984
+skinparam sequenceArrowColor                    #2E5984
+skinparam sequenceParticipantBorderColor        #2E5984
+skinparam sequenceParticipantBackgroundColor    #E8F0FE
+skinparam sequenceLifeLineBorderColor           #7BAFD4
+skinparam sequenceGroupBackgroundColor          #F2F7FB
+skinparam sequenceGroupBorderColor              #2E5984
 ```
 
 类图样式：
 ```plantuml
 skinparam class {
-    BackgroundColor #F2F7FB
-    BorderColor #2E5984
-    ArrowColor #2E5984
-    FontColor #1A3C5E
+    BackgroundColor    #F2F7FB
+    BorderColor        #2E5984
+    ArrowColor         #2E5984
+    FontColor          #1A3C5E
     AttributeFontSize 12
     StereotypeFontSize 11
 }
@@ -55,16 +55,16 @@ skinparam class {
 组件图样式：
 ```plantuml
 skinparam component {
-    BackgroundColor #E8F0FE
-    BorderColor #2E5984
-    FontColor #1A3C5E
+    BackgroundColor    #E8F0FE
+    BorderColor        #2E5984
+    FontColor          #1A3C5E
     FontSize 14
-    ArrowColor #2E5984
+    ArrowColor         #2E5984
 }
 skinparam package {
-    BackgroundColor #F8FAFC
-    BorderColor #7BAFD4
-    FontColor #2E5984
+    BackgroundColor    #F8FAFC
+    BorderColor        #7BAFD4
+    FontColor          #2E5984
     FontStyle Bold
 }
 ```
@@ -72,33 +72,33 @@ skinparam package {
 状态图样式：
 ```plantuml
 skinparam state {
-    BackgroundColor #E8F0FE
-    BorderColor #2E5984
-    FontColor #1A3C5E
+    BackgroundColor    #E8F0FE
+    BorderColor        #2E5984
+    FontColor          #1A3C5E
     FontSize 13
-    ArrowColor #2E5984
+    ArrowColor         #2E5984
 }
 ```
 
 活动图样式：
 ```plantuml
 skinparam activity {
-    BackgroundColor #E8F0FE
-    BorderColor #2E5984
-    FontColor #1A3C5E
-    ArrowColor #2E5984
+    BackgroundColor    #E8F0FE
+    BorderColor        #2E5984
+    FontColor          #1A3C5E
+    ArrowColor         #2E5984
 }
 skinparam partition {
-    BackgroundColor #F8FAFC
-    BorderColor #7BAFD4
+    BackgroundColor    #F8FAFC
+    BorderColor        #7BAFD4
 }
 ```
 
-## PlantUML 编写规范
+## PlantUML编写规范
 
-所有 PlantUML 代码必须能通过 `plantuml` 命令编译。遵循以下规范：
+所有PlantUML代码必须能通过 `plantuml` 命令编译。遵循以下规范：
 
-1. 使用 `@startuml <identifier>` / `@enduml` 包裹，identifier 作为输出文件名
+1. 使用 `@startuml <identifier>` / `@enduml` 包裹，identifier作为输出文件名
 2. 紧跟 `@startuml` 后插入全局样式块
 3. 使用中文标签：与文档语言保持一致
 4. 保持简洁：每个图聚焦于一个视图
@@ -106,20 +106,20 @@ skinparam partition {
 
 ## 布局控制技巧
 
-| 技巧 | 用法 | 场景 |
-|------|------|------|
-| 方向控制 | `left to right direction` | 用例图、组件图横向展开 |
-| 箭头方向 | `-up->`, `-down->`, `-left->`, `-right->` | 控制元素相对位置 |
-| 虚线方向 | `.up.>`, `.down.>`, `.left.>`, `.right.>` | 依赖关系方向控制 |
-| 隐藏底框 | `hide footbox` | 时序图简洁化 |
-| 隐藏空方法 | `hide empty methods` | 类图只展示属性 |
-| 隐藏圆圈 | `hide circle` | 类图去掉类型标记 |
-| 缩放 | `scale 1.2` / `scale 600 width` | 调整输出尺寸 |
-| UML2 组件 | `skinparam componentStyle uml2` | 组件图使用新版样式 |
+| 技巧       | 用法                                      | 场景                   |
+| ---------- | ----------------------------------------- | ---------------------- |
+| 方向控制   | `left to right direction`                 | 用例图、组件图横向展开 |
+| 箭头方向   | `-up->`, `-down->`, `-left->`, `-right->` | 控制元素相对位置       |
+| 虚线方向   | `.up.>`, `.down.>`, `.left.>`, `.right.>` | 依赖关系方向控制       |
+| 隐藏底框   | `hide footbox`                            | 时序图简洁化           |
+| 隐藏空方法 | `hide empty methods`                      | 类图只展示属性         |
+| 隐藏圆圈   | `hide circle`                             | 类图去掉类型标记       |
+| 缩放       | `scale 1.2` / `scale 600 width`           | 调整输出尺寸           |
+| UML2 组件  | `skinparam componentStyle uml2`           | 组件图使用新版样式     |
 
 ## 视觉增强技巧
 
-### 注释 (note)
+### 注释(note)
 
 ```plantuml
 ' 附着在元素上的注释
@@ -149,8 +149,8 @@ participant "API Gateway" <<facade>>
 
 ' 按构造型条件着色
 skinparam component {
-    BackgroundColor<<core>> #2E5984
-    BackgroundColor<<plugin>> #7BAFD4
+    BackgroundColor<<core>>      #2E5984
+    BackgroundColor<<plugin>>    #7BAFD4
 }
 ```
 
@@ -172,16 +172,16 @@ destroy TempHandler            ' 在交互中销毁
 
 ### 容器分组
 
-| 容器 | 语法 | 适用场景 |
-|------|------|----------|
-| box | `box "Name" #Color` | 时序图参与者分组 |
-| package | `package "Name" {}` | 逻辑分组、分层 |
-| rectangle | `rectangle "Name" {}` | 通用分组容器 |
-| node | `node "Name" {}` | 部署图服务器/设备 |
-| database | `database "Name" {}` | 数据库 |
-| cloud | `cloud {}` | 外部系统/网络 |
-| partition | `partition "Name" {}` | 活动图分区 |
-| frame | `package "Name" <<Frame>> {}` | 边框分组 |
+| 容器      | 语法                          | 适用场景          |
+| --------- | ----------------------------- | ----------------- |
+| box       | `box "Name" #Color`           | 时序图参与者分组  |
+| package   | `package "Name" {}`           | 逻辑分组、分层    |
+| rectangle | `rectangle "Name" {}`         | 通用分组容器      |
+| node      | `node "Name" {}`              | 部署图服务器/设备 |
+| database  | `database "Name" {}`          | 数据库            |
+| cloud     | `cloud {}`                    | 外部系统/网络     |
+| partition | `partition "Name" {}`         | 活动图分区        |
+| frame     | `package "Name" <<Frame>> {}` | 边框分组          |
 
 ## 示例
 
@@ -191,24 +191,24 @@ destroy TempHandler            ' 在交互中销毁
 ```plantuml
 @startuml usecase_scenario
 left to right direction
-skinparam backgroundColor #FEFEFE
+skinparam backgroundColor    #FEFEFE
 skinparam shadowing false
-skinparam ArrowColor #444444
+skinparam ArrowColor         #444444
 skinparam RoundCorner 8
 
 skinparam actor {
-    BorderColor #2E5984
-    BackgroundColor #E8F0FE
+    BorderColor              #2E5984
+    BackgroundColor          #E8F0FE
 }
 skinparam usecase {
-    BackgroundColor #F2F7FB
-    BorderColor #2E5984
-    FontColor #1A3C5E
+    BackgroundColor          #F2F7FB
+    BorderColor              #2E5984
+    FontColor                #1A3C5E
 }
 skinparam rectangle {
-    BackgroundColor #F8FAFC
-    BorderColor #7BAFD4
-    FontColor #2E5984
+    BackgroundColor          #F8FAFC
+    BorderColor              #7BAFD4
+    FontColor                #2E5984
     FontStyle Bold
 }
 
@@ -238,15 +238,15 @@ UC4 --> ExtSys
 ````markdown
 ```plantuml
 @startuml sequence_process
-skinparam backgroundColor #FEFEFE
+skinparam backgroundColor                       #FEFEFE
 skinparam shadowing false
 skinparam RoundCorner 8
-skinparam sequenceArrowColor #2E5984
-skinparam sequenceParticipantBorderColor #2E5984
-skinparam sequenceParticipantBackgroundColor #E8F0FE
-skinparam sequenceLifeLineBorderColor #7BAFD4
-skinparam sequenceGroupBackgroundColor #F2F7FB
-skinparam sequenceGroupBorderColor #2E5984
+skinparam sequenceArrowColor                    #2E5984
+skinparam sequenceParticipantBorderColor        #2E5984
+skinparam sequenceParticipantBackgroundColor    #E8F0FE
+skinparam sequenceLifeLineBorderColor           #7BAFD4
+skinparam sequenceGroupBackgroundColor          #F2F7FB
+skinparam sequenceGroupBorderColor              #2E5984
 hide footbox
 autonumber
 
@@ -259,7 +259,7 @@ Caller -> Mgr : Initialize()
 activate Mgr
 
 Mgr -> Svc : CreateService()
-activate Svc #E8F0FE
+activate Svc                                    #E8F0FE
 
 Svc -> DB : AllocateResource()
 activate DB
@@ -281,34 +281,34 @@ deactivate Mgr
 ```
 ````
 
-带 box 分组的时序图（多子系统交互）：
+带box分组的时序图（多子系统交互）：
 
 ````markdown
 ```plantuml
 @startuml sequence_grouped
-skinparam backgroundColor #FEFEFE
+skinparam backgroundColor                       #FEFEFE
 skinparam shadowing false
 skinparam RoundCorner 8
-skinparam sequenceArrowColor #2E5984
-skinparam sequenceParticipantBorderColor #2E5984
-skinparam sequenceParticipantBackgroundColor #E8F0FE
-skinparam sequenceLifeLineBorderColor #7BAFD4
+skinparam sequenceArrowColor                    #2E5984
+skinparam sequenceParticipantBorderColor        #2E5984
+skinparam sequenceParticipantBackgroundColor    #E8F0FE
+skinparam sequenceLifeLineBorderColor           #7BAFD4
 hide footbox
 autonumber
 
 actor User
 
-box "Frontend" #F8FAFC
+box "Frontend"                                  #F8FAFC
     participant "Web UI" as UI
 end box
 
-box "Backend" #F2F7FB
+box "Backend"                                   #F2F7FB
     participant "API Gateway" as GW
     participant "Auth Service" as Auth
     participant "Biz Service" as Biz
 end box
 
-box "Data Layer" #E8F0FE
+box "Data Layer"                                #E8F0FE
     database "Database" as DB
 end box
 
@@ -340,44 +340,47 @@ UI --> User : Render Result
 ````markdown
 ```plantuml
 @startuml class_logical
-skinparam backgroundColor #FEFEFE
+skinparam backgroundColor    #FEFEFE
 skinparam shadowing false
 skinparam RoundCorner 8
 skinparam class {
-    BackgroundColor #F2F7FB
-    BorderColor #2E5984
-    ArrowColor #2E5984
-    FontColor #1A3C5E
+    BackgroundColor          #F2F7FB
+    BorderColor              #2E5984
+    ArrowColor               #2E5984
+    FontColor                #1A3C5E
     AttributeFontSize 12
     StereotypeFontSize 11
 }
 hide circle
 
 abstract class BaseClass {
+
     # id_ : u32
+
     # name_ : string
+
     --
-    + Init() : Result
-    + Destroy() : Result
++ Init() : Result
++ Destroy() : Result
 }
 
 class ConcreteClass {
-    - config_ : Config
-    - manager_ : Manager*
+- config_ : Config
+- manager_ : Manager*
     -- Methods --
-    + Create() : Result
-    + Delete() : Result
++ Create() : Result
++ Delete() : Result
 }
 
 class Manager {
-    - connections_ : map<u32, Resource*>
-    + CreateResource() : Result
-    + GetResource() : Resource*
+- connections_ : map<u32, Resource*>
++ CreateResource() : Result
++ GetResource() : Resource*
 }
 
 interface IPlugin <<interface>> {
-    + OnLoad() : Result
-    + OnUnload() : Result
++ OnLoad() : Result
++ OnUnload() : Result
 }
 
 BaseClass <|-- ConcreteClass
@@ -392,42 +395,44 @@ end note
 ```
 ````
 
-带 package 分组的类图（框架级）：
+带package分组的类图（框架级）：
 
 ````markdown
 ```plantuml
 @startuml class_framework
-skinparam backgroundColor #FEFEFE
+skinparam backgroundColor    #FEFEFE
 skinparam shadowing false
 skinparam RoundCorner 8
 skinparam class {
-    BackgroundColor #F2F7FB
-    BorderColor #2E5984
-    ArrowColor #2E5984
-    FontColor #1A3C5E
+    BackgroundColor          #F2F7FB
+    BorderColor              #2E5984
+    ArrowColor               #2E5984
+    FontColor                #1A3C5E
 }
 hide empty methods
 
 package "Core" {
     abstract class BaseHandler {
+
         # ctx_ : Context
-        + Handle() : Result
+
++ Handle() : Result
     }
 }
 
 package "Handlers" {
     class ReadHandler {
-        - cache_ : Cache*
+- cache_ : Cache*
     }
     class WriteHandler {
-        - buffer_ : Buffer*
+- buffer_ : Buffer*
     }
 }
 
 package "Transport" {
     interface ITransport <<interface>> {
-        + Send() : Result
-        + Recv() : Result
++ Send() : Result
++ Recv() : Result
     }
     class TCPTransport
     class RDMATransport
@@ -448,26 +453,26 @@ ITransport <|.. RDMATransport
 ````markdown
 ```plantuml
 @startuml component_development
-skinparam backgroundColor #FEFEFE
+skinparam backgroundColor    #FEFEFE
 skinparam shadowing false
 skinparam RoundCorner 8
 skinparam componentStyle uml2
 skinparam component {
-    BackgroundColor #E8F0FE
-    BorderColor #2E5984
-    FontColor #1A3C5E
+    BackgroundColor          #E8F0FE
+    BorderColor              #2E5984
+    FontColor                #1A3C5E
     FontSize 14
-    ArrowColor #2E5984
+    ArrowColor               #2E5984
 }
 skinparam package {
-    BackgroundColor #F8FAFC
-    BorderColor #7BAFD4
-    FontColor #2E5984
+    BackgroundColor          #F8FAFC
+    BorderColor              #7BAFD4
+    FontColor                #2E5984
     FontStyle Bold
 }
 skinparam interface {
-    BackgroundColor #FEFEFE
-    BorderColor #2E5984
+    BackgroundColor          #FEFEFE
+    BorderColor              #2E5984
 }
 
 package "Application Layer" {
@@ -499,27 +504,27 @@ package "Platform Layer" {
 ```
 ````
 
-带 cloud/node 嵌套的组件图（系统级）：
+带cloud/node嵌套的组件图（系统级）：
 
 ````markdown
 ```plantuml
 @startuml component_system
-skinparam backgroundColor #FEFEFE
+skinparam backgroundColor    #FEFEFE
 skinparam shadowing false
 skinparam RoundCorner 8
 skinparam componentStyle uml2
 skinparam component {
-    BackgroundColor #E8F0FE
-    BorderColor #2E5984
-    FontColor #1A3C5E
+    BackgroundColor          #E8F0FE
+    BorderColor              #2E5984
+    FontColor                #1A3C5E
 }
 skinparam node {
-    BackgroundColor #F8FAFC
-    BorderColor #7BAFD4
+    BackgroundColor          #F8FAFC
+    BorderColor              #7BAFD4
 }
 skinparam database {
-    BackgroundColor #F2F7FB
-    BorderColor #2E5984
+    BackgroundColor          #F2F7FB
+    BorderColor              #2E5984
 }
 
 node "Host A" {
@@ -551,19 +556,19 @@ Worker -right-> Store : persist
 ````markdown
 ```plantuml
 @startuml activity_process
-skinparam backgroundColor #FEFEFE
+skinparam backgroundColor    #FEFEFE
 skinparam shadowing false
 skinparam RoundCorner 8
 skinparam activity {
-    BackgroundColor #E8F0FE
-    BorderColor #2E5984
-    FontColor #1A3C5E
-    ArrowColor #2E5984
+    BackgroundColor          #E8F0FE
+    BorderColor              #2E5984
+    FontColor                #1A3C5E
+    ArrowColor               #2E5984
 }
 skinparam partition {
-    BackgroundColor #F8FAFC
-    BorderColor #7BAFD4
-    FontColor #2E5984
+    BackgroundColor          #F8FAFC
+    BorderColor              #7BAFD4
+    FontColor                #2E5984
 }
 
 start
@@ -612,21 +617,21 @@ stop
 ````markdown
 ```plantuml
 @startuml activity_swimlane
-skinparam backgroundColor #FEFEFE
+skinparam backgroundColor    #FEFEFE
 skinparam shadowing false
 skinparam RoundCorner 8
 skinparam activity {
-    BackgroundColor #E8F0FE
-    BorderColor #2E5984
-    FontColor #1A3C5E
-    ArrowColor #2E5984
+    BackgroundColor          #E8F0FE
+    BorderColor              #2E5984
+    FontColor                #1A3C5E
+    ArrowColor               #2E5984
 }
 
-|User|
+| User |
 start
 :Submit Request;
 
-|API Gateway|
+| API Gateway |
 :Authenticate Request;
 if (Auth OK?) then (yes)
     :Route to Service;
@@ -635,15 +640,15 @@ else (no)
     stop
 endif
 
-|Business Service|
+| Business Service |
 :Validate Input;
 :Execute Business Logic;
 :Persist Result;
 
-|API Gateway|
+| API Gateway |
 :Format Response;
 
-|User|
+| User |
 :Receive Response;
 stop
 @enduml
@@ -655,14 +660,14 @@ stop
 ````markdown
 ```plantuml
 @startuml state_lifecycle
-skinparam backgroundColor #FEFEFE
+skinparam backgroundColor    #FEFEFE
 skinparam shadowing false
 skinparam RoundCorner 8
 skinparam state {
-    BackgroundColor #E8F0FE
-    BorderColor #2E5984
-    FontColor #1A3C5E
-    ArrowColor #2E5984
+    BackgroundColor          #E8F0FE
+    BorderColor              #2E5984
+    FontColor                #1A3C5E
+    ArrowColor               #2E5984
 }
 
 [*] -right-> IDLE
@@ -703,14 +708,14 @@ end note
 ````markdown
 ```plantuml
 @startuml state_nested
-skinparam backgroundColor #FEFEFE
+skinparam backgroundColor    #FEFEFE
 skinparam shadowing false
 skinparam RoundCorner 8
 skinparam state {
-    BackgroundColor #E8F0FE
-    BorderColor #2E5984
-    FontColor #1A3C5E
-    ArrowColor #2E5984
+    BackgroundColor          #E8F0FE
+    BorderColor              #2E5984
+    FontColor                #1A3C5E
+    ArrowColor               #2E5984
 }
 
 [*] --> Active
@@ -745,22 +750,22 @@ Shutdown --> [*]
 ````markdown
 ```plantuml
 @startuml deployment_physical
-skinparam backgroundColor #FEFEFE
+skinparam backgroundColor    #FEFEFE
 skinparam shadowing false
 skinparam RoundCorner 8
 skinparam node {
-    BackgroundColor #F8FAFC
-    BorderColor #7BAFD4
-    FontColor #2E5984
+    BackgroundColor          #F8FAFC
+    BorderColor              #7BAFD4
+    FontColor                #2E5984
 }
 skinparam component {
-    BackgroundColor #E8F0FE
-    BorderColor #2E5984
-    FontColor #1A3C5E
+    BackgroundColor          #E8F0FE
+    BorderColor              #2E5984
+    FontColor                #1A3C5E
 }
 skinparam database {
-    BackgroundColor #F2F7FB
-    BorderColor #2E5984
+    BackgroundColor          #F2F7FB
+    BorderColor              #2E5984
 }
 
 node "Application Server" {
@@ -808,9 +813,9 @@ curl -L -o /tmp/plantuml.jar https://github.com/plantuml/plantuml/releases/lates
 mkdir -p /tmp/designdoc_puml
 ```
 
-2. 从 markdown 中提取每个 plantuml 代码块为 `.puml` 文件，文件名使用 `@startuml` 后的标识符
+2. 从markdown中提取每个plantuml代码块为 `.puml` 文件，文件名使用 `@startuml` 后的标识符
 
-3. 批量渲染为 PNG：
+3. 批量渲染为PNG：
 ```bash
 # 使用 plantuml 命令
 plantuml -tpng -o /tmp/designdoc_puml/ /tmp/designdoc_puml/*.puml
@@ -819,7 +824,7 @@ plantuml -tpng -o /tmp/designdoc_puml/ /tmp/designdoc_puml/*.puml
 java -jar /tmp/plantuml.jar -tpng -o /tmp/designdoc_puml/ /tmp/designdoc_puml/*.puml
 ```
 
-4. 更新 markdown 中的图片引用：
+4. 更新markdown中的图片引用：
 ````markdown
 <!-- before -->
 ```plantuml
