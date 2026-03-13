@@ -14,9 +14,19 @@
 
 ## 目录页
 
-文档第一页为目录页（不生成封面页），使用 `TableOfContents`，需配合heading styles的 `outlineLevel`：
+文档第一页为目录页（不生成封面页），使用 `TableOfContents`，需配合heading styles的 `outlineLevel`。
+
+docx-js生成的TOC只包含域代码，不含实际条目。必须在Document配置中启用`updateFields`，Word打开时会自动刷新TOC：
 
 ```javascript
+const doc = new Document({
+  features: {
+    updateFields: true  // Word打开时自动更新TOC
+  },
+  // ...其他配置
+});
+
+// TOC定义
 new TableOfContents("目  录", {
   hyperlink: true,
   headingStyleRange: "1-3"
@@ -133,13 +143,13 @@ function tblCell(text, width, isEvenRow) {
 
 代码区域需要清晰区分于正文：
 
-| 项目      | 规格                          |
-| --------- | ----------------------------- |
-| 字体      | Courier New, 9pt (18 half-pt) |
-| 背景      | #F5F7FA（浅灰）               |
-| 左边框    | 3pt, #2E5984（蓝色竖条）      |
-| 段前/段后 | 60 DXA                        |
-| 行距      | 单倍行距(line: 240)           |
+| 项目      | 规格                        |
+| --------- | --------------------------- |
+| 字体      | Consolas, 9pt (18 half-pt)  |
+| 背景      | #F5F7FA（浅灰）             |
+| 左边框    | 3pt, #2E5984（蓝色竖条）    |
+| 段前/段后 | 60 DXA                      |
+| 行距      | 单倍行距(line: 240)         |
 
 ```javascript
 function codeBlock(text) {
@@ -148,13 +158,33 @@ function codeBlock(text) {
     shading: { fill: "F5F7FA", type: ShadingType.CLEAR },
     border: { left: { style: BorderStyle.SINGLE, size: 6, color: "2E5984", space: 8 } },
     indent: { left: 240 },
-    children: [new TextRun({ text, font: "Courier New", size: 18 })]
+    children: [new TextRun({ text, font: "Consolas", size: 18 })]
   });
 }
 
 // 多行代码块：每行一个 Paragraph
 function codeBlockMulti(lines) {
   return lines.map(line => codeBlock(line));
+}
+```
+
+## 行内代码样式
+
+正文中的行内代码使用与代码块相同的字体，配浅灰背景：
+
+| 项目   | 规格                       |
+| ------ | -------------------------- |
+| 字体   | Consolas, 10pt (20 half-pt)|
+| 背景   | #F5F7FA（浅灰）            |
+
+```javascript
+function inlineCode(text) {
+  return new TextRun({
+    text,
+    font: "Consolas",
+    size: 20,
+    shading: { fill: "F5F7FA", type: ShadingType.CLEAR }
+  });
 }
 ```
 

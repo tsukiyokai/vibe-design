@@ -1,6 +1,6 @@
 ---
 name: vibe-design
-description: "用于生成软件设计文档。当用户提到 '设计文档'、'design doc'、'SD'、'SRS'、'需求分析'、'软件设计'、'架构设计'，或要求根据需求描述生成技术设计文档时触发。自动学习代码仓库中的相关代码和文档，基于模板生成 markdown 格式的设计文档（含 4+1 架构视图的 PlantUML 图），并转换为 .docx 文件。"
+description: "用于生成软件设计文档。当用户提到 '设计文档'、'design doc'、'SD'、'SRS'、'需求分析'、'软件设计'、'架构设计'，或要求根据需求描述生成技术设计文档时触发。自动学习代码仓库中的相关代码和文档，基于模板生成 markdown 格式的设计文档（含 4+1 架构视图的 PlantUML/D2 图），并转换为 .docx 文件。"
 ---
 
 # 软件设计文档生成Skill
@@ -137,6 +137,7 @@ Layer 3增强(横切阶段追加):
 - 模块交互：谁调用谁、数据怎么流动
 - 设计意图：为什么现有代码这样设计（如果能判断的话）
 - 盲区标注：明确列出"我不确定"或"没找到"的部分
+- 输出文件名：从需求标题派生文件名（如`非对称跨框场景TopoMatch适配`），向用户显式确认。后续所有步骤(md/png/svg/docx)统一使用此文件名前缀
 - (CANN项目追加)代际归属与兼容性：涉及V1/V2哪个代际，是否有跨代约束
 - (CANN项目追加)硬件目标范围：涉及哪些DevType，分支覆盖情况
 - (CANN项目追加)分派链路径：涉及哪些selector→executor→template链路
@@ -201,7 +202,13 @@ Layer 3增强(横切阶段追加):
 - 站在"向新人解释这个系统"的视角，而非"向编译器解释代码"
 - 设计决策要说明取舍：选了A方案，B方案为什么不行
 - 多画图：能用图表达的不用文字。拓扑关系、数据流向、调用链路、状态转换都应优先用图呈现，文字作为图的补充说明而非替代
-- 参数/接口描述用竖排定义列表而非宽表格：每个参数用四级标题+子项(类型、来源、说明)展开，避免多列表格在Typora中的视觉问题
+- D2触发检查：写完每个章节后，扫描是否存在以下内容，若存在则必须生成对应的D2图而非纯文字/ASCII:
+  1. rank/设备分布描述 → rank拓扑图
+  2. 数据搬运或通信路径描述 → 数据流图
+  3. 层级分组描述(L0/L1/L2, level 0/level 1) → 通信层级图
+  4. 流水线阶段描述 → 流水线同步图
+  ASCII代码块中的拓扑示意不能替代D2图——ASCII是草稿，D2是正式交付物
+- 表格 vs 定义列表的选择：根据条目复杂度自动判断。每个条目仅1-2个属性(如术语→释义、枚举→含义)用表格；每个条目3个以上属性(如参数的类型+来源+说明+示例)用竖排定义列表(四级标题+子项展开)
 - 对照cann-defect-patterns.md的"按设计文档章节的关联映射"表(仅8大模式，不含子模式)，在对应章节主动回答防范问题(如: 接口参数类型够宽吗? 流水线切换有barrier吗?)。子模式详解仅在第六步自检时使用
 - 设计决策要引用design-principles-digest.md中的框架(如: 选择Strategy模式是因为需要运行时切换算法)
 
@@ -224,6 +231,8 @@ PlantUML编写规范和视图选择指南参见 [plantuml-guide.md](references/p
 
 ### 4.2b D2示意图规则
 
+D2图不是可选装饰，而是特定内容的必选表达方式。当文档中出现拓扑布局、通信层级、数据流向、流水线阶段等内容时，必须用D2图表达，文字仅作为D2图的补充说明。
+
 PlantUML适合UML图(类图/时序图/活动图/组件图)，D2适合非UML示意图(拓扑布局/数据流/架构总览)。选择依据：
 
 | 需要表达的内容 | 选用工具 |
@@ -242,6 +251,8 @@ D2图编写规则：
 5. 图表元素旁用D2注释标注来源：`# file:line`
 6. 绘制完成后逐元素自检，与PlantUML同等要求
 7. 不使用颜色(fill/stroke)区分元素 — 渲染时使用 `--sketch -t 0` 黑白手绘风格，用stroke-dash、形状、标签文字区分不同连线/分组
+8. 表达N对M映射关系(如rank→slot、子组→层级)时，优先使用grid矩阵布局(行=一个维度，列=另一个维度，交叉点=映射结果)，而非逐条连线。连线图在节点超过8个时会因交叉导致可读性急剧下降
+9. 宽高比控制：渲染后检查图片宽高比，超过3:1或1:3时必须调整布局。常见原因及修复：grid-rows:1导致横向铺开→增加grid-rows使元素折行；direction与容器嵌套方向一致导致单轴拉伸→调整direction或拆分容器。目标宽高比在4:3到3:4之间
 
 D2编写规范和CANN场景示例参见 [d2-guide.md](references/d2-guide.md)。
 
@@ -250,13 +261,11 @@ D2编写规范和CANN场景示例参见 [d2-guide.md](references/d2-guide.md)。
 - 所有模板中定义的章节必须存在且非空
 - 根据需求选用2-4个最相关的4+1架构视图
 - 中文优先：文档内容、图中标签均使用中文
-- 文件名从需求标题派生，如 `自定义算子支持aclGraph-ccu模式.md`
+- 文件名必须使用Checkpoint 1中确认的文件名，禁止使用`design_doc`、`output`等通用名称。文件名从需求标题派生，如 `自定义算子支持aclGraph-ccu模式.md`
 
-### 4.4 格式化与渲染
+### 4.4 渲染
 
-Markdown文件生成完成后(以及后续任何修改导致的刷新后)：
-1. 调用vibe-fmter skill进行中英文混排格式化
-2. 提取并渲染图表(PlantUML→PNG，D2→SVG)，更新图片引用(详见第五步)
+Markdown文件生成完成后(以及后续任何修改导致的刷新后)，提取并渲染图表(PlantUML→PNG，D2→SVG)，更新图片引用(详见第五步)。
 
 ### 4.5 内容自检与定稿(Checkpoint 3)
 
@@ -269,6 +278,8 @@ Markdown文件生成完成后(以及后续任何修改导致的刷新后)：
 | 必填章节完整性 | 模板定义的所有章节均必须存在且非空                    | 补充缺失章节内容       |
 | 表格完整性     | 所有表格不得有空单元格，表头与数据行列数一致          | 填充空单元格或修正列数 |
 | 代码块语言标注 | 所有代码块必须标注语言                                | 给裸代码块补上语言标注 |
+| D2覆盖率       | 文档中不得存在未可视化的拓扑/数据流/层级ASCII描述；每个此类描述必须有对应的D2图 | 将ASCII描述转为D2代码块并渲染 |
+| 图片去重       | 同一张图不得在多个章节重复引用；若两处语境不同则应分别绘制各自侧重的图 | 为不同章节画独立的图，调整视角和详略 |
 
 与代码一致性校验：
 
@@ -290,7 +301,7 @@ Markdown文件生成完成后(以及后续任何修改导致的刷新后)：
 | 流水线同步         | DataCopy流程是否设计了正确的barrier/flag配对?                     | 补充同步设计             |
 | 变更规模           | 预估代码变更是否超3000行? 是否需要拆分?                          | 补充拆分方案             |
 
-自检修改后重新调用vibe-fmter格式化并重新渲染图表，然后向用户呈现最终md(含渲染图)，确认定稿后再进入第六步生成docx。
+自检修改后重新渲染图表，然后向用户呈现最终md(含渲染图)，确认定稿后再进入第六步生成docx。
 
 ---
 
@@ -320,7 +331,8 @@ curl -fsSL https://d2lang.com/install.sh | sh -s --
 2. 从markdown中提取plantuml代码块为`.puml`文件，d2代码块为`.d2`文件
 3. 渲染PlantUML：`plantuml -tpng -o /tmp/designdoc_diagrams/ /tmp/designdoc_diagrams/*.puml`
 4. 渲染D2：对每个.d2文件执行 `d2 --sketch -t 0 input.d2 output.svg`（黑白手绘风格）
-5. 更新markdown中的图片引用：plantuml代码块替换为`![标题](path.png)`，d2代码块替换为`![标题](path.svg)`
+5. 宽高比验证：对每张渲染产物检查尺寸（`sips -g pixelWidth -g pixelHeight`或`identify`），宽高比超过3:1或1:3的图必须回到.d2源码调整布局后重新渲染
+6. 更新markdown中的图片引用：plantuml代码块替换为`![标题](path.png)`，d2代码块替换为`![标题](path.svg)`
 
 详细的PlantUML编写规范参见 [plantuml-guide.md](references/plantuml-guide.md)，D2编写规范参见 [d2-guide.md](references/d2-guide.md)。
 
@@ -359,7 +371,7 @@ d2 --theme 200 input.d2 output.png
 | D2可编译       | 所有 `.d2` 文件必须通过 `d2 fmt --check` 检查         | 修复语法错误后重新渲染     |
 | 图片引用有效   | 所有 `![...](path)` 引用的图片文件必须存在            | 重新渲染缺失图片或修正路径 |
 
-若产物校验修改了Markdown，先调用vibe-fmter skill重新格式化，再重新渲染和生成.docx。
+若产物校验修改了Markdown，重新渲染图表并重新生成.docx。
 
 ---
 
@@ -378,7 +390,7 @@ User input (requirement description)
 [3] Select template + Checkpoint 2: outline with depth allocation -> user confirms
     |
 [4] Generate <name>.md (evidence-based writing + PlantUML/D2 from symbol table)
-    |  4.4 format with vibe-fmter + render diagrams (PNG/SVG)
+    |  4.4 render diagrams (PNG/SVG)
     |  4.5 content self-check + Checkpoint 3: user confirms final md (with rendered diagrams)
     |
 [5] Generate <name>.docx + artifact validation
@@ -398,7 +410,7 @@ Output final artifacts
 ## 注意事项
 
 1. 不要跳过Checkpoint：三个Checkpoint是强制的，闷头写的文档大概率推倒重来
-2. 符号表是图表的唯一来源：PlantUML/D2图中不出现符号表以外的元素
+2. 符号表是PlantUML图的唯一来源：PlantUML图中不出现符号表以外的元素。D2图的元素来源于代码中的实际标识符(rank编号、设备名、模块名等)，同样需要回查代码确认
 3. 严格遵循模板：Markdown标题层级必须与所选模板完全一致
 4. 不生成封面页：docx仅包含一个section（目录 + 正文）
 5. 深度分配不均匀：重点章节至少是略写章节的3倍篇幅
@@ -408,4 +420,4 @@ Output final artifacts
 9. 先定稿再转docx：md内容自检并经用户确认后才生成docx，但图表在格式化后即渲染，方便审稿
 10. 排版一致性：所有元素必须使用统一样式
 11. 领域探索增强: CANN项目应加载参考资料，并按1.5节的探索增强项和充分性检查增强执行
-12. 格式化前置: Markdown生成/修改后必须先调用vibe-fmter格式化再进行后续步骤
+12. 中英文混排: 生成的Markdown应自行遵循中英文间距等排版规范，不依赖外部格式化工具

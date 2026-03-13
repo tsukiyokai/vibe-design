@@ -16,83 +16,19 @@
 
 每张图必须包含统一的视觉主题。在 `@startuml` 之后、内容之前插入样式块。
 
+风格定位：使用PlantUML内置plain主题，干净简洁。
+
 ### 基础主题（所有图通用）
 
 ```plantuml
-' --- 基础样式 ---
-skinparam backgroundColor    #FEFEFE
-skinparam shadowing false
+!theme plain
 skinparam defaultFontName "Noto Sans CJK SC"
 skinparam defaultFontSize 13
-skinparam ArrowColor         #444444
-skinparam RoundCorner 8
 ```
 
 ### 按图类型的专用样式
 
-时序图样式：
-```plantuml
-skinparam sequenceArrowColor                    #2E5984
-skinparam sequenceParticipantBorderColor        #2E5984
-skinparam sequenceParticipantBackgroundColor    #E8F0FE
-skinparam sequenceLifeLineBorderColor           #7BAFD4
-skinparam sequenceGroupBackgroundColor          #F2F7FB
-skinparam sequenceGroupBorderColor              #2E5984
-```
-
-类图样式：
-```plantuml
-skinparam class {
-    BackgroundColor    #F2F7FB
-    BorderColor        #2E5984
-    ArrowColor         #2E5984
-    FontColor          #1A3C5E
-    AttributeFontSize 12
-    StereotypeFontSize 11
-}
-```
-
-组件图样式：
-```plantuml
-skinparam component {
-    BackgroundColor    #E8F0FE
-    BorderColor        #2E5984
-    FontColor          #1A3C5E
-    FontSize 14
-    ArrowColor         #2E5984
-}
-skinparam package {
-    BackgroundColor    #F8FAFC
-    BorderColor        #7BAFD4
-    FontColor          #2E5984
-    FontStyle Bold
-}
-```
-
-状态图样式：
-```plantuml
-skinparam state {
-    BackgroundColor    #E8F0FE
-    BorderColor        #2E5984
-    FontColor          #1A3C5E
-    FontSize 13
-    ArrowColor         #2E5984
-}
-```
-
-活动图样式：
-```plantuml
-skinparam activity {
-    BackgroundColor    #E8F0FE
-    BorderColor        #2E5984
-    FontColor          #1A3C5E
-    ArrowColor         #2E5984
-}
-skinparam partition {
-    BackgroundColor    #F8FAFC
-    BorderColor        #7BAFD4
-}
-```
+plain主题已提供统一的黑白简洁外观，通常无需额外定制。如需微调，在 `!theme plain` 之后追加skinparam覆盖即可。
 
 ## PlantUML编写规范
 

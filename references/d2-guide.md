@@ -355,6 +355,73 @@ executor.exec_hd -> template.tpl_hd {style.stroke: "#6B7B8D"}
 executor.exec_mesh -> template.tpl_mesh {style.stroke: "#6B7B8D"}
 ```
 
+### 示例5: 两级通信层级映射矩阵
+
+N对M映射关系用矩阵表达，避免连线交叉。行=Level 0子组，列=Level 1 slot，交叉点=rank编号：
+
+```d2
+direction: down
+
+rank-mapping: "Rank Mapping Matrix  (instSizeList=[8,4], GCD=4)" {
+  grid-rows: 4
+  grid-columns: 5
+
+  # Header row: Level 1 slot labels (dashed border)
+  corner: "Level 0 \\ Level 1" {
+    style.font-size: 13
+    style.stroke-dash: 5
+  }
+  h1: "Slot 0\nrankId%4=0" {
+    style.stroke-dash: 5
+    style.font-size: 14
+  }
+  h2: "Slot 1\nrankId%4=1" {
+    style.stroke-dash: 5
+    style.font-size: 14
+  }
+  h3: "Slot 2\nrankId%4=2" {
+    style.stroke-dash: 5
+    style.font-size: 14
+  }
+  h4: "Slot 3\nrankId%4=3" {
+    style.stroke-dash: 5
+    style.font-size: 14
+  }
+
+  # Row 0: Subgroup 0 (Server A, ranks 0-3)
+  sg0: "Subgroup 0\nServer A [0..3]" {
+    style.stroke-dash: 3
+    style.font-size: 13
+  }
+  r0: Rank 0
+  r1: Rank 1
+  r2: Rank 2
+  r3: Rank 3
+
+  # Row 1: Subgroup 1 (Server A, ranks 4-7)
+  sg1: "Subgroup 1\nServer A [4..7]" {
+    style.stroke-dash: 3
+    style.font-size: 13
+  }
+  r4: Rank 4
+  r5: Rank 5
+  r6: Rank 6
+  r7: Rank 7
+
+  # Row 2: Subgroup 2 (Server B, ranks 8-11)
+  sg2: "Subgroup 2\nServer B [8..11]" {
+    style.stroke-dash: 3
+    style.font-size: 13
+  }
+  r8: Rank 8
+  r9: Rank 9
+  r10: Rank 10
+  r11: Rank 11
+}
+```
+
+对比反模式（连线图）：12个rank到4个slot的连线会产生大量交叉，可读性极差。矩阵布局零交叉，信息密度更高。
+
 ---
 
 ## 编写约束
@@ -365,6 +432,15 @@ executor.exec_mesh -> template.tpl_mesh {style.stroke: "#6B7B8D"}
 4. 容器嵌套层级不超过4层(pod→node→device→rank)
 5. 单张图节点数不超过30个，超过则拆分为多张
 6. 绘制完成后逐元素回查代码确认
+7. N对M映射用矩阵，不用连线：当两个维度存在映射关系（如rank→slot、子组→层级）时，用grid布局（行=维度A，列=维度B，交叉点=映射结果），不要画逐条连线。连线图在节点>8时因交叉而不可读
+8. 宽高比必须在4:3到3:4之间，渲染后用图片尺寸验证，超过3:1或1:3立即返工。常见导致狭长图的反模式及修复：
+
+| 反模式 | 效果 | 修复 |
+|--------|------|------|
+| 容器内`grid-rows: 1` + 元素多 | 所有元素水平铺开，图极宽 | 增大grid-rows使元素折行(如8个元素用grid-rows: 2) |
+| `direction: right` + 深层容器嵌套 | 容器沿水平堆叠，宽度累加 | 改为`direction: down`或拆分为多张图 |
+| `direction: down` + 容器内又`direction: right` | 内外方向冲突导致一个轴失控拉伸 | 统一内外方向，或内层用grid替代direction |
+| 大量跨容器连线 | D2自动布局为连线预留空间导致图膨胀 | 用矩阵布局替代连线(见约束7) |
 
 ## 何时选D2而非PlantUML
 
